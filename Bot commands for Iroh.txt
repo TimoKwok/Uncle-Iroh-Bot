@@ -1,0 +1,9 @@
+   '-' is the prefix
+
+-ping = Iroh says Pong!
+-youtube = youtube link
+-intro = Iroh introduces himself
+-tea = Iroh can give you tea, or mention another user to give them tea
+-advice = Iroh gives you some advice
+-hug = Iroh helps you break the ice and hug other members
+-clear = Iroh can clear large amounts of messages

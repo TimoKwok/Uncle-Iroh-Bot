@@ -1,0 +1,175 @@
+main:
+
+const Discord = require('discord.js');
+
+const client = new Discord.Client();
+
+const prefix = '-';
+
+const fs = require('fs');
+
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+for(const file of commandFiles){
+    const command = require(`./commands/${file}`);
+
+    client.commands.set(command.name, command);
+}
+
+client.once('ready', () => {
+    console.log('Uncle Iroh is online!');
+});
+
+client.on('message', message =>{
+    if(!message.content.startsWith(prefix) || message.author.bot) return;
+
+    const args = message.content.slice(prefix.length).split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    if(command === 'ping'){
+        client.commands.get('ping').execute(message, args);
+    } else if (command == 'youtube'){
+        client.commands.get('youtube').execute(message, args);
+    } else if (command === 'info'){
+        client.commands.get('info').execute(message, args, Discord);
+    } else if(command == 'tea'){
+        client.commands.get('tea').execute(message, args);
+    } else if(command === 'advice'){
+        client.commands.get('advice').execute(message, args);
+    } else if(command == 'clear'){
+        client.commands.get('clear').execute(message, args);
+    } else if(command === 'hug'){
+        client.commands.get('hug').execute(message, args);
+    }
+});
+
+client.login('ODYxMzY4Nzk4MDUyMjIwOTQ4.YOIyNA.VBF4TI2w-po9SM1XC_tR7oJD1js');
+
+
+
+
+advice: 
+
+module.exports = {
+    name: 'advice',
+    description: "Provides the user with some Iroh wisom!",
+    execute(message, args) {
+        
+        let responses = [
+         "*There is nothing wrong with a life of peace and prosperity. I suggest you think about what it is you want from your life.*",
+         "*Failure is only the opportunity to begin again.*", 
+         "*Sometimes, the best way to solve your own problems is to help someone else.*", 
+         "*Good times become good memories, but bad times make good lessons.*", 
+         "*It is usually best to admit mistakes when they occur, and to seek to restore honor.*", 
+         "*It is important to draw wisdom from many different places.*", 
+         "*It's time for you to look inward and start asking yourself the big question: who are you and what do you want?*", 
+         "*Hope is something you give yourself. That is the meaning of inner strength.*", 
+         "*Destiny is a funny thing. You never know how things are going to work out.*", 
+         "*While it is always best to believe in oneself, a little help from others can be a great blessing.*", 
+         "*Pride is not the opposite of shame, but its source. True Humility is the only antidote to shame.*", 
+         "*Life happens wherever you are, whether you make it or not.*", 
+         "*Follow your passion and life will reward you.*", 
+         "*Many things that seem threatening in the dark become welcoming when we shine light on them.*", 
+         "*If you look for the light, you can often find it. But if you look for the dark, that is all you will ever see.*"
+        
+        ]
+
+        let response = Math.floor(Math.random() * responses.length)
+
+        message.reply(responses[response])
+    }
+}
+
+clear:
+
+module.exports = {
+    name: 'clear', 
+    description: "clear messages!",
+    async execute(message, args) {
+        if(!args[0]) return message.reply("*Uh...How many messages do you want me to delete?*");
+        if(isNaN(args[0])) return message.reply("*I may be old, but i still know that was not a number!*");
+
+        if(args[0] > 100) return message.reply("*I think that is a bit too much destruction...*");
+        if(args[0] < 1) return message.reply("*That is beyond my power, you need to delete at least one message.*");
+
+        await message.channel.messages.fetch({limit: args[0]}).then(messages =>{
+            message.channel.bulkDelete(messages);
+        });
+    }
+}
+
+tea:
+
+module.exports = {
+    name: 'tea',
+    description: "gives the user tea!",
+    execute(message, args){
+
+        persontea = message.mentions.users.first()
+        if (persontea){
+            message.channel.send(`*${message.author.username} gives ${persontea.username} some warm tea! :tea:*`)
+
+       
+    }   else if (!args[0]) return message.reply('*Here is your tea! :tea:*');
+
+
+
+    }
+} 
+
+
+info: 
+
+module.exports = {
+    name: 'info',
+    description: "Embeds!",
+    execute(message, args, Discord) {
+        const newEmbed = new Discord.MessageEmbed()
+        .setColor('#A10000')
+        .setTitle('Uncle Iroh here!')
+        .setDescription('*Hello! my name is Iroh, retired Fire Nation general and Grand Lotus. I am here to provide you with guidance, wisdom, and tea! Here are some of the things that I can do!*')
+        .setImage('https://static.wikia.nocookie.net/17049b50-a239-48a2-8882-7fd94217c0d3')
+        .addFields(
+            {name: '-info', value: '*some information about me!*'}, 
+            {name: '-tea', value: '*I will provide you with some tea! :tea:*'}, 
+            {name: '-advice', value: '*I am always here to give you advice on your journey!*'}, 
+            {name: '-clear', value: '*I can use my firebending abilities to delete messages!*'}
+        )
+        .setFooter('Have a lovely day!');
+
+        message.channel.send(newEmbed);
+    } 
+
+}
+
+hug: 
+
+module.exports = {
+    name: 'hug',
+    description: "hug someone",
+    execute(message, args) {
+        
+        let responses = [
+            "https://i.pinimg.com/originals/68/9a/4c/689a4ce8b2813769ae7e50c4c9300bbb.gif",
+            "https://i.gifer.com/Vtqm.gif",
+            "https://thumbs.gfycat.com/UnsightlyHastyGossamerwingedbutterfly-size_restricted.gif",
+            "https://i.gifer.com/BqY1.gif",
+            "https://i.pinimg.com/originals/4b/c1/d1/4bc1d135269dbfccdadcb1b543210abb.gif",
+            "https://i1.wp.com/media1.tenor.com/images/097b4670f7341e85cbc14565d7fdf0f7/tenor.gif?w=1200&ssl=1",
+            "https://thumbs.gfycat.com/ImmensePerfumedCrow-size_restricted.gif",
+            "https://64.media.tumblr.com/b41fa9ad77084ab7477f4b1587815d54/283f687748d7fb3e-ae/s500x750/679dd7c7a13fd2a2779d33087c5a54ccf11bb4b1.gifv",
+            "https://64.media.tumblr.com/d554d3ac4518ca9e889a23ace6682cef/tumblr_pioot0kgx41sieiueo8_r1_500.gifv"
+
+        ]
+
+        let response = Math.floor(Math.random() * responses.length)
+
+        personHugged = message.mentions.users.first()
+        if (personHugged){
+            message.channel.send(`*${message.author.username} hugs ${personHugged.username}! :heart:*`),
+            message.channel.send(responses[response])
+
+        } else if (!args[0]) return message.reply("*Who is it that you would like to hug?*");
+    }
+}
